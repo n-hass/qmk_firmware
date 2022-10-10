@@ -16,7 +16,9 @@ enum my_keycodes {
   LED_0,
   LED_MINS,
   LED_EQL,
-  SSV_TOG
+  SSV_TOG,
+  STORE_SETUPS,
+  PRINT_SETUPS
 };
 
 // Keymap layer names

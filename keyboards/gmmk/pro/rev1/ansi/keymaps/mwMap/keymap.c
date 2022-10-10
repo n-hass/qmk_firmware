@@ -6,14 +6,16 @@
 
 #include QMK_KEYBOARD_H
 #include "shared.h"
+#include "os_detection.h"
 
-// #include "print.h"
+#include "print.h"
 
 #ifdef RGB_MATRIX_ENABLE
   #ifndef RGB_CONFIRMATION_BLINKING_TIME
     #define RGB_CONFIRMATION_BLINKING_TIME 1000 // 1 second
   #endif
 #endif // RGB_MATRIX_ENABLE
+
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -129,17 +131,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// void print_layer(void) {
-//   if(IS_LAYER_ON(_MAC))
-//     print("Mac layer");
-//   if(IS_LAYER_ON(_WIN))
-//     print("Win layer");
-//   if(IS_LAYER_ON(_FNALL))
-//     print("FNALL layer");
-//   if(IS_LAYER_ON(_FNREVERT))
-//     print("FN Revert layer");
-//   if(IS_LAYER_ON(_FNMENU))
-//     print("FN Menu layer");
+// runs every time the layers are changed
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//   #ifdef CONSOLE_ENABLE
+//     uprintf("Current layer state mask: %d", state); // this probably wont work wiht %d, debug the first time you try to compile this
+//   #endif
+//   return state;
 // }
 
 #ifdef ENCODER_ENABLE
@@ -236,6 +233,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
           uprintf("ERROR! RGB Matrix Enabled and wrote to EEPROM! -How was the RGB Matrix Disabled?");
         #endif
     }
+#   ifdef OS_DETECTION
+    // Set the layer based on detected OS
+    switch(detected_host_os()){
+      case OS_MACOS:
+        layer_on(_MAC);
+        break;
+      case OS_IOS:
+        layer_on(_MAC);
+        break;
+      default:
+        layer_on(_WIN);
+        break;
+    }
+#   endif
   }
 
   /* Renaming those to make the purpose on this keymap clearer */
@@ -277,6 +288,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+
+      case STORE_SETUPS:
+        if (record->event.pressed) {
+          store_setups_in_eeprom();
+        }
+        return false;
+      case PRINT_SETUPS:
+        if (record->event.pressed) {
+            print_stored_setups();
+        }
+        return false;
+
+
+
       // https://github.com/qmk/qmk_firmware/issues/10111
       case KC_MSCTRL:
         if (record->event.pressed) {

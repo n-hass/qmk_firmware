@@ -113,6 +113,7 @@ void print_stored_setups(void) {
     uint8_t cnt = eeprom_read_byte(EEPROM_USER_OFFSET);
     for (uint16_t i = 0; i < cnt; ++i) {
         uint16_t* addr = (uint16_t*)EEPROM_USER_OFFSET + i * sizeof(uint16_t) + sizeof(uint8_t);
+        (void)addr;
         xprintf("i: %d, wLength: 0x%02X\n", i, eeprom_read_word(addr));
     }
 #    endif
