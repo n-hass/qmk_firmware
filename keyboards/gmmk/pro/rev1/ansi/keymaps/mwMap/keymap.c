@@ -129,17 +129,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// void print_layer(void) {
-//   if(IS_LAYER_ON(_MAC))
-//     print("Mac layer");
-//   if(IS_LAYER_ON(_WIN))
-//     print("Win layer");
-//   if(IS_LAYER_ON(_FNALL))
-//     print("FNALL layer");
-//   if(IS_LAYER_ON(_FNREVERT))
-//     print("FN Revert layer");
-//   if(IS_LAYER_ON(_FNMENU))
-//     print("FN Menu layer");
+// runs every time the layers are changed
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//   #ifdef CONSOLE_ENABLE
+//     uprintf("Current layer state mask: %d", state); // this probably wont work wiht %d, debug the first time you try to compile this
+//   #endif
+//   return state;
 // }
 
 #ifdef ENCODER_ENABLE
