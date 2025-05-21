@@ -32,6 +32,9 @@ indent_style = tab
 [*.sh]
 end_of_line = lf
 
+[*.nix]
+indent_size = 2
+
 # The gitattributes file will handle the line endings conversion properly according to the operating system settings for other files
 
 
