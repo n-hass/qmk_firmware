@@ -207,7 +207,8 @@ bool led_matrix_indicators_user(void) {
 }
 #endif
 
-#ifdef RGB_MATRIX_ENABLE
+#ifndef DISABLE_FACTORY_KEYCHRON_HOOKS
+    #ifdef RGB_MATRIX_ENABLE
 bool rgb_matrix_indicators_user(void) {
     if (factory_reset_ind_state) {
         backlight_test_mode = BACKLIGHT_TEST_OFF;
@@ -231,6 +232,7 @@ bool rgb_matrix_indicators_user(void) {
 
     return true;
 }
+    #endif
 #endif
 
 void factory_reset_task(void) {
@@ -330,6 +332,7 @@ void factory_test_rx(uint8_t *data, uint8_t length) {
     }
 }
 
+#ifndef DISABLE_FACTORY_KEYCHRON_HOOKS
 bool dip_switch_update_user(uint8_t index, bool active) {
     if (report_os_sw_state) {
 #ifdef INVERT_OS_SWITCH_STATE
@@ -341,3 +344,4 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 
     return true;
 }
+#endif
